@@ -1873,6 +1873,8 @@ GameObject:
   - component: {fileID: 4053483325762326478}
   - component: {fileID: 2695718687918660799}
   - component: {fileID: 1314310721126377993}
+  - component: {fileID: 4236031647595581006}
+  - component: {fileID: 3306711968696720264}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1925,6 +1927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c396cdef9c3182443b4a7a684e263ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterController: {fileID: 0}
 --- !u!114 &1314310721126377993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1937,6 +1940,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf332490359cbd4b86523e839a4044a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  verticalMovement: 0
+  horizontalMovement: 0
+  moveAmount: 0
+  walkingSpeed: 2
+  runningSpeed: 5
+--- !u!114 &4236031647595581006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410363368004032505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e3eaa8a2c32d94687414d93d199831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  networkPositionVelocity: {x: 0, y: 0, z: 0}
+  networkPositionSmoothTime: 0.1
+--- !u!143 &3306711968696720264
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410363368004032505}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.8
+  m_Radius: 0.23
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &8544501933105422443
 GameObject:
   m_ObjectHideFlags: 0
