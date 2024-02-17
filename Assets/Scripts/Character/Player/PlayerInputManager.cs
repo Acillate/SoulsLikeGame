@@ -6,11 +6,21 @@ using UnityEngine.SceneManagement;
 public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
+    public PlayerManager player;
     PlayerControls playerControls;
+
+    //LEFT JOYSTICK VARIABLES
+    [Header("MOVEMENT INPUT")]
     [SerializeField] Vector2 movementInput;
     public float verticalInput;
     public float horizontalInput;
     public float moveAmount;
+
+    //RIGHT JOYSTICK VARIABLES
+    [Header("CAMERA INPUT")]
+    [SerializeField] Vector2 cameraInput;
+    public float cameraVerticalInput;
+    public float cameraHorizontalInput;
 
     private void Awake() {
         //There can only be one instance of this script at one time if another exists destroy it
@@ -47,6 +57,7 @@ public class PlayerInputManager : MonoBehaviour
             playerControls = new PlayerControls();
             //When ever the joystick is moved take that input value and give it to Vector2 movementInput
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+            playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
         }
         playerControls.Enable();
     }
@@ -74,10 +85,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
-        HandleMovementInput();
+        HandlePlayerMovementInput();
+        HandleCameraMovementInput();
     }
 
-    private void HandleMovementInput()
+    private void HandlePlayerMovementInput()
     {
         verticalInput = movementInput.y;
         horizontalInput = movementInput.x;
@@ -96,5 +108,19 @@ public class PlayerInputManager : MonoBehaviour
         {
             moveAmount = 1;
         }
+
+        //0 because horiztonal is for strafe movement we dont want strafe movement unless we are locked on to a enemey
+
+        if (player == null) return;
+        //if we are not locked on only use the move amount
+        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+
+        //if we are locked on pass the horiztonal movement as well
+    }
+
+    private void HandleCameraMovementInput() 
+    {
+        cameraVerticalInput = cameraInput.y;
+        cameraHorizontalInput = cameraInput.x;
     }
 }

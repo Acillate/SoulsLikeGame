@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerLocomotionManager : CharacterLocomotionManager
 {
@@ -24,24 +25,45 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         player = GetComponent<PlayerManager>();
     }
 
+    protected override void Update()
+    {
+        base.Update();
 
+        if(player.IsOwner) 
+        { 
+           player.characterNetworkManager.verticalMovement.Value = verticalMovement;
+           player.characterNetworkManager.horizontalMovement.Value = horizontalMovement;
+           player.characterNetworkManager.moveAmount.Value = moveAmount; 
+        }
+        else 
+        {
+            horizontalMovement = player.characterNetworkManager.horizontalMovement.Value;
+            verticalMovement = player.characterNetworkManager.verticalMovement.Value;
+            moveAmount = player.characterNetworkManager.moveAmount.Value;
+
+            //If not locked on pass move amount
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+
+            //if locked on pass the vertical and horizontal values 
+        }
+    }
 
     public void HandleAllMovement(){
         HandleGroundedMovement();
         HandleRotation();
     }
 
-    private void GetVerticalAndHorizontalInputs()
+    private void GetMovementValues()
     {
         verticalMovement = PlayerInputManager.instance.verticalInput;
         horizontalMovement = PlayerInputManager.instance.horizontalInput;
-
+        moveAmount = PlayerInputManager.instance.moveAmount;
         // Clamp the movements
     }
 
     private void HandleGroundedMovement()
     {
-        GetVerticalAndHorizontalInputs();
+        GetMovementValues();
         // our move direction is based on our cameras facing perspective and movement input
         moveDir = PlayerCamera.instance.transform.forward * verticalMovement;
         moveDir = moveDir + PlayerCamera.instance.transform.right * horizontalMovement;

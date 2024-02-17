@@ -5,15 +5,16 @@ using Unity.Netcode;
 
 public class CharacterManager : NetworkBehaviour
 {
-   public CharacterController characterController;
-
-   CharacterNetworkManager characterNetworkManager;
+   [HideInInspector] public CharacterController characterController;
+   [HideInInspector] public Animator animator;
+   [HideInInspector] public CharacterNetworkManager characterNetworkManager;
    protected virtual void Awake() 
    {
       DontDestroyOnLoad(this);
 
       characterController = GetComponent<CharacterController>();
       characterNetworkManager = GetComponent<CharacterNetworkManager>();
+      animator = GetComponent<Animator>();
    }
 
    protected virtual void Update() {
@@ -22,7 +23,7 @@ public class CharacterManager : NetworkBehaviour
         {
             characterNetworkManager.networkPosition.Value = transform.position;
             characterNetworkManager.networkRotation.Value = transform.rotation;
-
+            
         }
         // if this character is being controlled from else where then assign its position here locally by the position of its network transform
         else
@@ -40,5 +41,10 @@ public class CharacterManager : NetworkBehaviour
                 characterNetworkManager.networkRotation.Value, 
                 characterNetworkManager.networkRotationSmoothTime);
         }
+   }
+
+   protected virtual void LateUpdate()
+   {
+
    }
 }
